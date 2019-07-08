@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo</title>
+    <script src="dist/bundle.js"></script>
+    <script>
+        const test = (n) => {
+            for (let i = 0; i < n; i++) {
+            }
+        };
+        const options = {
+            target: test,
+            params: 9000
+        };
+        const perf = Perf.getInstance(options);
+        const report = perf.getReport();
+        console.log(report.timeStatus, 'Report');
+        console.log(report.memoryStatus, 'Report');
+        function fetchData() {
+            performance.clearMarks("start update");
+            performance.mark("start update");
+            test(90);
+            updateData({tst: 't'});
+            // Do an XHR or JSON request that calls updateData() with the new data.
+        }
+
+        function updateData(data) {
+            // Update the DOM with the new data.
+
+            performance.clearMarks("finish update");
+            performance.mark("finish update");
+            performance.measure("update data", "start update", "finish update");
+        }
+        fetchData();
+        perf.evaluatePerformance();
+        console.log(performance.getEntriesByType("measure")[0], 'inin');
+
+    </script>
+</head>
+<body>
+<div id="report">Here is my report</div>
+</div>
+
+</body>
+</html>
